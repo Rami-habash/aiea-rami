@@ -1,7 +1,11 @@
-results for task 4 running queries on soccer player prolog file
-running t4_query.py file queries on rules from t4_facts.pl
+results for task 4 running queries on soccer player "t4_facts.pl" file
+1. using janus-swi python interpreter
+2. using swi-prolog
 
---------------------
+---------------------
+1. python interpreter janus-swi 
+t4_query.py:
+---------------------
 results:
 Type "exit" to quit
 Enter your Prolog query (without ?- ):
@@ -30,10 +34,58 @@ No solutions found.
 
 Enter your Prolog query (without ?- ):
 exit
--------------------
+--------------------
 
-- results show what happens when you run queries
-- if you run a query without a solution: in the example 
-above valverde is not a player in the prolog file
-- also shows exiting
+--------------------
+2. swi prolog (swipl):
+--------------------
+?- [t4_facts].
+true.
 
+?- liga_f(claudia_pina).
+true.
+
+?- la_liga(kylian_mbappe).
+true.
+
+?- wsl(sam_kerr).
+true.
+
+?- liga_f(aitana_bonmati).
+true.
+
+?- la_liga(valverde).
+false.
+
+?- ^D
+% halt
+?- [t4_facts].
+true.
+
+?- liga_f(claudia_pina).
+true.
+
+?- la_liga(kylian_mbappe).
+true.
+
+?- wsl(sam_kerr).
+true.
+
+?- liga_f(aitana_bonmati).
+true.
+
+?- la_liga(valverde).
+false.
+
+?- ^D
+% halt
+--------------------
+
+--------------------
+analysis
+--------------------
+Both janus-swi in python and swi-prolog return the same results
+when running the same queries. I used "No solutions found."
+instead of "false" because it allows me to be more general
+over different types of queries.
+--------------------
