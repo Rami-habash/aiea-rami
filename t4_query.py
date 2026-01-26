@@ -2,7 +2,7 @@ import janus_swi as janus
 
 janus.consult('t4_facts.pl')
 
-print('type "exit" to quit')
+print('Type "exit" to quit')
 
 while True:
     print('Enter your Prolog query (without ?- ):')

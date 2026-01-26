@@ -1,0 +1,39 @@
+results for task 4 running queries on soccer player prolog file
+running t4_query.py file queries on rules from t4_facts.pl
+
+--------------------
+results:
+Type "exit" to quit
+Enter your Prolog query (without ?- ):
+liga_f(claudia_pina)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+la_liga(kylian_mbappe)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+premier_league(mohamed_salah)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+wsl(sam_kerr)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+liga_f(aitana_bonmati)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+la_liga(valverde)
+No solutions found.
+
+Enter your Prolog query (without ?- ):
+exit
+-------------------
+
+- results show what happens when you run queries
+- if you run a query without a solution: in the example 
+above valverde is not a player in the prolog file
+- also shows exiting
+
