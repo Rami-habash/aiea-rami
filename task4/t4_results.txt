@@ -1,0 +1,91 @@
+results for task 4 running queries on soccer player "t4_facts.pl" file
+1. using janus-swi python interpreter
+2. using swi-prolog
+
+---------------------
+1. python interpreter janus-swi 
+t4_query.py:
+---------------------
+results:
+Type "exit" to quit
+Enter your Prolog query (without ?- ):
+liga_f(claudia_pina)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+la_liga(kylian_mbappe)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+premier_league(mohamed_salah)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+wsl(sam_kerr)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+liga_f(aitana_bonmati)
+{'truth': True}
+
+Enter your Prolog query (without ?- ):
+la_liga(valverde)
+No solutions found.
+
+Enter your Prolog query (without ?- ):
+exit
+--------------------
+
+--------------------
+2. swi prolog (swipl):
+--------------------
+?- [t4_facts].
+true.
+
+?- liga_f(claudia_pina).
+true.
+
+?- la_liga(kylian_mbappe).
+true.
+
+?- wsl(sam_kerr).
+true.
+
+?- liga_f(aitana_bonmati).
+true.
+
+?- la_liga(valverde).
+false.
+
+?- ^D
+% halt
+?- [t4_facts].
+true.
+
+?- liga_f(claudia_pina).
+true.
+
+?- la_liga(kylian_mbappe).
+true.
+
+?- wsl(sam_kerr).
+true.
+
+?- liga_f(aitana_bonmati).
+true.
+
+?- la_liga(valverde).
+false.
+
+?- ^D
+% halt
+--------------------
+
+--------------------
+analysis
+--------------------
+Both janus-swi in python and swi-prolog return the same results
+when running the same queries. I used "No solutions found."
+instead of "false" because it allows me to be more general
+over different types of queries.
+--------------------
