@@ -1,0 +1,10 @@
+langchain
+langchain-openai
+langchain-community
+langchain-core
+faiss-cpu
+nltk
+python-dotenv
+openai
+matplotlib
+numpy

@@ -1,0 +1,902 @@
+[
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "kylian_mbappe is male",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "mohamed_salah is male",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lamine_yamal is male",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "claudia_pina is female",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "sam_kerr is female",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "aitana_bonmati is female",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "kylian_mbappe plays in spain",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "claudia_pina plays in spain",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lamine_yamal plays in spain",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "mohamed_salah plays in england",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "sam_kerr plays in england",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "aitana_bonmati plays in spain",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "kylian_mbappe plays in La Liga",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lamine_yamal plays in La Liga",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "mohamed_salah plays in the Premier League",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "claudia_pina plays in Liga F",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "sam_kerr plays in the WSL",
+    "label": "True"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "kylian_mbappe is female",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "kylian_mbappe plays in england",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "mohamed_salah is female",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "mohamed_salah plays in spain",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "mohamed_salah plays in La Liga",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "claudia_pina is male",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "claudia_pina plays in england",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "claudia_pina plays in the WSL",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "sam_kerr is male",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "sam_kerr plays in spain",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "sam_kerr plays in Liga F",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lamine_yamal is female",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lamine_yamal plays in england",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lamine_yamal plays in the Premier League",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "aitana_bonmati is male",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "aitana_bonmati plays in england",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "aitana_bonmati plays in the WSL",
+    "label": "False"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lionel_messi is male",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lionel_messi plays in spain",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lionel_messi plays in the Premier League",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "lionel_messi plays in La Liga",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "alex_morgan is female",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "alex_morgan plays in england",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "alex_morgan plays in the WSL",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "alex_morgan plays in Liga F",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "marta is female",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "marta plays in spain",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "megan_rapinoe plays in england",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "megan_rapinoe is female",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "zinedine_zidane plays in La Liga",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "zinedine_zidane plays in the Premier League",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "unknown_player plays in france",
+    "label": "Uncertain"
+  },
+  {
+    "premises": [
+      "kylian_mbappe is male",
+      "mohamed_salah is male",
+      "lamine_yamal is male",
+      "claudia_pina is female",
+      "sam_kerr is female",
+      "aitana_bonmati is female",
+      "kylian_mbappe plays in spain",
+      "claudia_pina plays in spain",
+      "lamine_yamal plays in spain",
+      "mohamed_salah plays in england",
+      "sam_kerr plays in england",
+      "aitana_bonmati plays in spain"
+    ],
+    "conclusion": "another_player plays in germany",
+    "label": "Uncertain"
+  }
+]
