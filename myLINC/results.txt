@@ -1,0 +1,275 @@
+--- QUICK ANALYSIS ---
+The LLM Judge saw the FOLIO data as relevant in all the cases and 
+directed to the linc pathway. Never COT.
+
+The reason for this is because I changed RAG to retrieve from
+FOLIO and FOLIO is pretty much showing the LLM how to translate.
+Also my generated FOLIO database is super similar to the examples
+that the LLM deals with. Therefore, it makes a lot of sense for
+the LLM to direct it to linc and use a theorem prover for all the 
+following queries:
+
+============================================================
+Query 1: Mohamed Salah is female.
+============================================================
+Label : False
+Predicted : False
+
+--- FOL Translation ---
+  Premise: Male(Kylian_mbappe)
+  Premise: Male(Mohamed_salah)
+  Premise: Male(Lamine_yamal)
+  Premise: Female(Claudia_pina)
+  Premise: Female(Sam_kerr)
+  Premise: Female(Aitana_bonmati)
+  Premise: Plays_in(Kylian_mbappe, Spain)
+  Premise: Plays_in(Claudia_pina, Spain)
+  Premise: Plays_in(Lamine_yamal, Spain)
+  Premise: Plays_in(Mohamed_salah, England)
+  Premise: Plays_in(Sam_kerr, England)
+  Premise: Plays_in(Aitana_bonmati, Spain)
+  Premise: all x. (Female(x) -> -Male(x))
+  Premise: all x. (Male(x) -> -Female(x))
+  Premise: all x. (Plays_in(x, England) -> -Plays_in(x, Spain))
+  Premise: all x. (Plays_in(x, Spain) -> -Plays_in(x, England))
+  Premise: all x. ((Male(x) & Plays_in(x, England)) -> Premier_league(x))
+  Premise: all x. ((Male(x) & Plays_in(x, Spain)) -> La_liga(x))
+  Premise: all x. ((Female(x) & Plays_in(x, England)) -> Wsl(x))
+  Premise: all x. ((Female(x) & Plays_in(x, Spain)) -> Liga_f(x))
+  Conclusion: Female(Mohamed_salah)
+
+--- Prover9 Inference Trace ---
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 7.
+% Level of proof is 3.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (Female(x) -> -Male(x))) # label(non_clause).  [assumption].
+9 -Female(Mohamed_salah) # label(non_clause) # label(goal).  [goal].
+10 -Female(x) | -Male(x).  [clausify(1)].
+12 Male(Mohamed_salah).  [assumption].
+22 Female(Mohamed_salah).  [deny(9)].
+24 -Female(Mohamed_salah).  [resolve(10,b,12,a)].
+33 $F.  [resolve(24,a,22,a)].
+
+============================== end of proof
+--- Interpretting Prover9's Resolution Inference ---
+Short, plain-language walk-through of the trace:
+
+- Line 1: all x (Female(x) -> -Male(x)).  
+  Premise: for every person, if they are Female then they are not Male.
+
+- Line 9: -Female(Mohamed_salah).  
+  This is the goal: show Mohamed_salah is not Female.
+
+- Line 12: Male(Mohamed_salah).  
+  Premise: Mohamed_salah is Male.
+
+- Line 22: Female(Mohamed_salah).  
+  Introduced by deny(9): we assume the opposite of the goal (Female(Mohamed_salah)) to derive a contradiction (proof by contradiction).
+
+- Line 10: -Female(x) | -Male(x).  
+  clausify(1): the implication Female(x) -> -Male(x) becomes the clause “not Female(x) or not Male(x).”
+
+- Line 24: -Female(Mohamed_salah).  
+  resolve(10,b,12,a): resolve clause 10 with Male(Mohamed_salah). The literal -Male(x) cancels with Male(Mohamed_salah) (with x := Mohamed_salah), leaving -Female(Mohamed_salah).
+
+- Line 33: $F.  
+  resolve(24,a,22,a): resolve -Female(Mohamed_salah) with the assumed Female(Mohamed_salah). They cancel, producing the empty clause (contradiction).
+
+Conclusion: Assuming Female(Mohamed_salah) leads to contradiction, so the original goal -Female(Mohamed_salah) is proved.
+
+============================================================
+Query 2: Lamine Yamal is in the Premier League.
+============================================================
+Label : Uncertain
+Predicted : Uncertain
+
+--- FOL Translation ---
+  Premise: Male(Kylian_mbappe)
+  Premise: Male(Mohamed_salah)
+  Premise: Male(Lamine_yamal)
+  Premise: Female(Claudia_pina)
+  Premise: Female(Sam_kerr)
+  Premise: Female(Aitana_bonmati)
+  Premise: Plays_in(Kylian_mbappe, Spain)
+  Premise: Plays_in(Claudia_pina, Spain)
+  Premise: Plays_in(Lamine_yamal, Spain)
+  Premise: Plays_in(Mohamed_salah, England)
+  Premise: Plays_in(Sam_kerr, England)
+  Premise: Plays_in(Aitana_bonmati, Spain)
+  Premise: all x. (Female(x) -> -Male(x))
+  Premise: all x. (Male(x) -> -Female(x))
+  Premise: all x. (Plays_in(x, England) -> -Plays_in(x, Spain))
+  Premise: all x. (Plays_in(x, Spain) -> -Plays_in(x, England))
+  Premise: all x. ((Male(x) & Plays_in(x, England)) -> Premier_league(x))
+  Premise: all x. ((Male(x) & Plays_in(x, Spain)) -> La_liga(x))
+  Premise: all x. ((Female(x) & Plays_in(x, England)) -> Wsl(x))
+  Premise: all x. ((Female(x) & Plays_in(x, Spain)) -> Liga_f(x))
+  Conclusion: Premier_league(Lamine_yamal)
+
+(No proof found because verdict: Uncertain)
+
+============================================================
+Query 3: Aitana Bonmati plays in England.
+============================================================
+Label : False
+Predicted : False
+
+--- FOL Translation ---
+  Premise: Male(Kylian_mbappe)
+  Premise: Male(Mohamed_salah)
+  Premise: Male(Lamine_yamal)
+  Premise: Female(Claudia_pina)
+  Premise: Female(Sam_kerr)
+  Premise: Female(Aitana_bonmati)
+  Premise: Plays_in(Kylian_mbappe, Spain)
+  Premise: Plays_in(Claudia_pina, Spain)
+  Premise: Plays_in(Lamine_yamal, Spain)
+  Premise: Plays_in(Mohamed_salah, England)
+  Premise: Plays_in(Sam_kerr, England)
+  Premise: Plays_in(Aitana_bonmati, Spain)
+  Premise: all x. (Female(x) -> -Male(x))
+  Premise: all x. (Male(x) -> -Female(x))
+  Premise: all x. (Plays_in(x, England) -> -Plays_in(x, Spain))
+  Premise: all x. (Plays_in(x, Spain) -> -Plays_in(x, England))
+  Premise: all x. ((Male(x) & Plays_in(x, England)) -> Premier_league(x))
+  Premise: all x. ((Male(x) & Plays_in(x, Spain)) -> La_liga(x))
+  Premise: all x. ((Female(x) & Plays_in(x, England)) -> Wsl(x))
+  Premise: all x. ((Female(x) & Plays_in(x, Spain)) -> Liga_f(x))
+  Conclusion: Plays_in(Aitana_bonmati, England)
+
+--- Prover9 Inference Trace ---
+============================== PROOF =================================
+
+% Proof 1 at 0.00 (+ 0.00) seconds.
+% Length of proof is 6.
+% Level of proof is 2.
+% Maximum clause weight is 6.000.
+% Given clauses 7.
+
+3 (all x (Plays_in(x,England) -> -Plays_in(x,Spain))) # label(non_clause).  [assumption].
+9 -Plays_in(Aitana_bonmati,England) # label(non_clause) # label(goal).  [goal].
+30 Plays_in(Aitana_bonmati,Spain).  [assumption].
+31 -Plays_in(x,England) | -Plays_in(x,Spain).  [clausify(3)].
+32 Plays_in(Aitana_bonmati,England).  [deny(9)].
+35 $F.  [resolve(31,b,30,a),unit_del(a,32)].
+
+============================== end of proof
+--- Interpretting Prover9's Resolution Inference ---
+Short, plain-language explanation of the trace (line numbers refer to the trace):
+
+- Line 3: Assumption — "For every x, if x plays in England then x does not play in Spain."
+- Line 30: Assumption — "Aitana_bonmati plays in Spain."
+- Line 9: The goal — "Aitana_bonmati does not play in England."
+
+Clausification and temporary assumptions:
+- Line 31: Clausified form of line 3: "Either x does not play in England, or x does not play in Spain." (¬Plays_in(x,England) ∨ ¬Plays_in(x,Spain))
+- Line 32: Deny(goal) — assume the opposite (for contradiction): "Aitana_bonmati plays in England."
+
+Resolution steps:
+- Resolve line 31 with line 30: from (¬P ∨ ¬Q) and Q we get ¬P. Concretely, with Q = Plays_in(Aitana_bonmati,Spain) we infer ¬Plays_in(Aitana_bonmati,England).
+- Resolve that inferred ¬Plays_in(Aitana_bonmati,England) with the denied goal (line 32: Plays_in(Aitana_bonmati,England)) to obtain the empty clause ($F), a contradiction.
+
+Conclusion:
+- Assuming the opposite of the goal leads to contradiction, so the goal (¬Plays_in(Aitana_bonmati,England)) follows from the given assumptions.
+
+============================================================
+Query 4: Mohamed Salah is not female.
+============================================================
+Label : True
+Predicted : True
+
+--- FOL Translation ---
+  Premise: Male(Kylian_mbappe)
+  Premise: Male(Mohamed_salah)
+  Premise: Male(Lamine_yamal)
+  Premise: Female(Claudia_pina)
+  Premise: Female(Sam_kerr)
+  Premise: Female(Aitana_bonmati)
+  Premise: Plays_in(Kylian_mbappe, Spain)
+  Premise: Plays_in(Claudia_pina, Spain)
+  Premise: Plays_in(Lamine_yamal, Spain)
+  Premise: Plays_in(Mohamed_salah, England)
+  Premise: Plays_in(Sam_kerr, England)
+  Premise: Plays_in(Aitana_bonmati, Spain)
+  Premise: all x. (Female(x) -> -Male(x))
+  Premise: all x. (Male(x) -> -Female(x))
+  Premise: all x. (Plays_in(x, England) -> -Plays_in(x, Spain))
+  Premise: all x. (Plays_in(x, Spain) -> -Plays_in(x, England))
+  Premise: all x. ((Male(x) & Plays_in(x, England)) -> Premier_league(x))
+  Premise: all x. ((Male(x) & Plays_in(x, Spain)) -> La_liga(x))
+  Premise: all x. ((Female(x) & Plays_in(x, England)) -> Wsl(x))
+  Premise: all x. ((Female(x) & Plays_in(x, Spain)) -> Liga_f(x))
+  Conclusion: -Female(Mohamed_salah)
+
+--- Prover9 Inference Trace ---
+============================== PROOF =================================
+
+% Proof 1 at 0.01 (+ 0.01) seconds.
+% Length of proof is 7.
+% Level of proof is 3.
+% Maximum clause weight is 0.000.
+% Given clauses 0.
+
+1 (all x (Female(x) -> -Male(x))) # label(non_clause).  [assumption].
+9 -Female(Mohamed_salah) # label(non_clause) # label(goal).  [goal].
+10 -Female(x) | -Male(x).  [clausify(1)].
+12 Male(Mohamed_salah).  [assumption].
+22 Female(Mohamed_salah).  [deny(9)].
+24 -Female(Mohamed_salah).  [resolve(10,b,12,a)].
+33 $F.  [resolve(24,a,22,a)].
+
+============================== end of proof
+--- Interpretting Prover9's Resolution Inference ---
+Brief readable explanation of the trace
+
+Premises and goal (in plain English)
+- (1) All x: Female(x) -> not Male(x).  "No one is both female and male." (clause 1)
+- (12) Male(Mohamed_salah).  "Mohamed Salah is male." (assumption)
+- Goal (9): -Female(Mohamed_salah).  "Show: Mohamed Salah is not female."
+
+Clausification
+- (10) -Female(x) OR -Male(x).  This is the clausified form of (1): you cannot have both Female(x) and Male(x).
+
+Proof steps (resolution, with simple explanation)
+- (24) -Female(Mohamed_salah).  From (10) and (12) by resolving the literal -Male(x) with Male(Mohamed_salah). Instantiation x = Mohamed_salah gives: if he is male then he cannot be female.
+- (22) Female(Mohamed_salah).  This is the temporary denial of the goal used for contradiction (deny(9)).
+- (33) contradiction ($F).  Resolving (24) [-Female(Mohamed_salah)] with (22) [Female(Mohamed_salah)] yields the empty clause, a contradiction.
+
+Conclusion
+- The contradiction shows the denial of the goal is impossible, so the goal -Female(Mohamed_salah) is proved: given the premises, Mohamed Salah is not female.
+
+============================================================
+Query 5: Lamine Yamal plays in Italy.
+============================================================
+Label : Uncertain
+Predicted : Uncertain
+
+--- FOL Translation ---
+  Premise: Male(Kylian_mbappe)
+  Premise: Male(Mohamed_salah)
+  Premise: Male(Lamine_yamal)
+  Premise: Female(Claudia_pina)
+  Premise: Female(Sam_kerr)
+  Premise: Female(Aitana_bonmati)
+  Premise: Plays_in(Kylian_mbappe, Spain)
+  Premise: Plays_in(Claudia_pina, Spain)
+  Premise: Plays_in(Lamine_yamal, Spain)
+  Premise: Plays_in(Mohamed_salah, England)
+  Premise: Plays_in(Sam_kerr, England)
+  Premise: Plays_in(Aitana_bonmati, Spain)
+  Premise: all x. (Female(x) -> -Male(x))
+  Premise: all x. (Male(x) -> -Female(x))
+  Premise: all x. (Plays_in(x, England) -> -Plays_in(x, Spain))
+  Premise: all x. (Plays_in(x, Spain) -> -Plays_in(x, England))
+  Premise: all x. ((Male(x) & Plays_in(x, England)) -> Premier_league(x))
+  Premise: all x. ((Male(x) & Plays_in(x, Spain)) -> La_liga(x))
+  Premise: all x. ((Female(x) & Plays_in(x, England)) -> Wsl(x))
+  Premise: all x. ((Female(x) & Plays_in(x, Spain)) -> Liga_f(x))
+  Conclusion: Plays_in(Lamine_yamal, Italy)
+
+(No proof found because verdict: Uncertain)
