@@ -32,9 +32,13 @@ myPlot.py: graph (make plt) the accuracy of models tested
 
 
 #================================================================#
-Notes:
+SETUP
 #================================================================#
-- This md is not refined yet. Needs more expansion later
+1. Clone repo
+2. Install requirements.txt
+3. Setup myProg.py
+4. Use Makefile commands
+
 
 
 

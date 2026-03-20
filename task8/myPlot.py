@@ -28,7 +28,7 @@ def plot_results(results: dict):
 
     ax.set_xlabel("Model")
     ax.set_ylabel("Accuracy (%)")
-    ax.set_title("Baseline vs LINC+ Accuracy by LLM")
+    ax.set_title("ProofWriter: Baseline vs LINC+ accuracy")
     ax.set_xticks(x)
     ax.set_xticklabels(models)
     ax.set_ylim(0, 100)
