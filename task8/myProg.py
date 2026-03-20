@@ -1,6 +1,5 @@
 # myProg.py
 ## Reimplementing LINC using RAG in LngChain
-
 '''
 PIPELINE:
 LINC:  ProofWriter/Folio -> Semantic Parser (LLM) -> FOL -> Prover9
@@ -27,7 +26,7 @@ err = 0 # for debugging
 # CONFIG
 #----------------#
 
-MODELS_TEST = ['gpt-4o-mini', 'gpt-3.5-turbo']
+MODELS_TEST = ['gpt-3.5-turbo', 'gpt-4o-mini']
 MODES = ['baseline', 'neurosymbolic']
 PW_FILE = "soccer_kb.json"
 K_VOTES = 3 # number of votes for each example verdict
@@ -46,11 +45,11 @@ def run_benchmark(pw_examples, all_examples):
     vector_store = build_vectorstore(all_examples, embeddings)  # build RAG index over full KB (not test set)
 
     results = {}
+    traces = {}
 
     for model_name in MODELS_TEST:
         llm = ChatOpenAI(model=model_name, temperature=0.7)
         results[model_name] = {}
-        traces = {}
 
         for mode in MODES:
             chain = build_chain(llm, mode)

@@ -24,6 +24,13 @@ plays_in(mohamed_salah, england).
 plays_in(sam_kerr, england).
 plays_in(aitana_bonmati, spain).
 
+% exclusivity constraints
+% necessary because prover 9 uses OWA
+\+male(X) :- female(X).
+\+female(X) :- male(X).
+\+plays_in(X, spain) :- plays_in(X, england).
+\+plays_in(X, england) :- plays_in(X, spain).
+
 % rules matching the player to their actual league name
 % based on what region they play in and their gender.
 premier_league(X) :- male(X), plays_in(X, england).

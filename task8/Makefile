@@ -23,4 +23,4 @@ plt:
 
 clean:
 	rm -rf __pycache__/
-	rm -f *.json/
+	rm -f *.json

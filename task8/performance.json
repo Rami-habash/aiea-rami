@@ -1,10 +1,10 @@
 {
-  "gpt-4o-mini": {
-    "baseline": 0.72,
-    "neurosymbolic": 0.88
-  },
   "gpt-3.5-turbo": {
     "baseline": 0.62,
     "neurosymbolic": 0.82
+  },
+  "gpt-4o-mini": {
+    "baseline": 0.72,
+    "neurosymbolic": 0.88
   }
 }

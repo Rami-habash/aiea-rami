@@ -2,6 +2,9 @@
 # Semantic parser: prompt formatting, LLM chain, example runner, and RAG retrieval
 # Some functions similar to LINC's eval/base.py
 
+# TODO: fixing RAG to be more useful and use FOLIO examples
+# current step: soccer_kb.json first 50 contain pw examples and second 50 contain FOLIO
+
 import json
 import os
 
@@ -45,7 +48,7 @@ def retrieve(vector_store: FAISS, conclusion: str, k: int = 3) -> list[dict]:
 def get_instructions(mode: str) -> str:
     # adapted from LINC eval/base.py get_instructions()
     # to get similar instructions as linc for the models
-    # added instructions imrpove parsing to nltk 
+    # added instructions imrpove parsing to nltk FOL
     instructions = ""
     instructions += "The following is a first-order logic (FOL) problem.\n"
     instructions += "The problem is to determine whether the conclusion follows from the premises.\n"
@@ -56,9 +59,9 @@ def get_instructions(mode: str) -> str:
     elif mode == "neurosymbolic":
         instructions += "The task is to translate each of the premises and the conclusion into FOL expressions, "
         instructions += "so that the expressions can be evaluated by a theorem solver to determine whether the conclusion follows from the premises.\n"
-        instructions += "Expressions should adhere to the format of the Python NLTK package logic module.\n"
+        instructions += "Expressions MUST adhere to the format of the Python NLTK package logic module.\n"
+        instructions += "NOTATION: Use LOWERCASE for predicates, CAPITALIZED names for constants (e.g. Kylian_mbappe), and standard NLTK connectives: &, |, ->, -, all x., exists x.\n\n"
         instructions += "Output ONLY the FOL translations, one per line. Prefix EVERY line with 'FOL: '.\n"
-        instructions += "NOTATION: Use LOWERCASE for predicsted, CAPITALIZED names for constants (e.g. Kylian_mbappe), and standard NLTK connectives: &, |, ->, -, all x., exists x.\n"
         instructions += "Example output format:\n"
         instructions += "FOL: male(Kylian_mbappe)\n"
         instructions += "FOL: all x.(male(x) & plays_in(x, England) -> premier_league(x))\n"

@@ -9,8 +9,8 @@ def plot_results(results: dict):
     """
     result json file like: 
     {
-        "gpt-4o-mini": {"baseline": 0.62, "neurosymbolic": 0.78},
-        "gpt-3.5-turbo": {"baseline": 0.50, "neurosymbolic": 0.64},
+        "gpt-3.5-turbo": {"baseline": 0.62, "neurosymbolic": 0.78},
+        "gpt-4o-mini": {"baseline": 0.50, "neurosymbolic": 0.64},
     }
     """
 
