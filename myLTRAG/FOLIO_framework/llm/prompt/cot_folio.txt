@@ -1,0 +1,132 @@
+Input:
+Premises:
+1.No criminal is kind.
+2.All person who breaks the law is a criminals.
+3.People are either kind or evil.
+4.If someone is evil, then they are ugly.
+5.If someone is evil, then they are cold-blood.
+6.If Garry is either evil and ugly or neither evil nor ugly, then Garry is not evil.
+
+Conclusion:
+If Garry is evil or breaks the law, then Garry is not both a criminal and breaking the law.
+Output:
+Step-by-Step Evaluation
+
+We will determine if the conclusion logically follows from the premises. Let’s examine the premises and proceed step by step.
+
+Premises:
+
+1. No criminal is kind.
+   - If someone is a criminal, they are not kind.
+
+2. All persons who break the law are criminals.
+   - Breaking the law makes a person a criminal.
+
+3. People are either kind or evil.
+   - This establishes a binary: every person is either kind or evil, with no overlap.
+
+4. If someone is evil, then they are ugly.
+   - Being evil implies being ugly.
+
+5. If someone is evil, then they are cold-blood.
+   - Being evil also implies being cold-blood.
+
+6. If Garry is either evil and ugly or neither evil nor ugly, then Garry is not evil.
+   - This is a conditional statement:
+     If Garry satisfies the condition of being evil and ugly or neither evil nor ugly, then he is not evil.
+
+Conclusion:
+If Garry is evil or breaks the law, then Garry is not both a criminal and breaking the law.
+
+We need to determine if this follows from the premises.
+
+Logical Analysis:
+
+1. Premise 2: All persons who break the law are criminals.
+   - If Garry breaks the law, then Garry is a criminal. This directly links "breaking the law" to being a criminal.
+
+2. Premise 3: People are either kind or evil.
+   - Since Garry must be either kind or evil, there is no third option.
+
+3. Premise 1: No criminal is kind.
+   - If someone is a criminal, they cannot be kind, which means they must be evil (by Premise 3).
+
+4. Combining Premises 1, 2, and 3:
+   - If Garry breaks the law, he is a criminal.
+   - If he is a criminal, then he cannot be kind.
+   - Therefore, Garry must be evil if he breaks the law.
+
+5. Premise 6:
+   - "If Garry is either evil and ugly or neither evil nor ugly, then Garry is not evil."
+   - This introduces a condition for when Garry is not evil.
+   - However, if Garry breaks the law, we already established that he must be evil.
+   - Therefore, Premise 6 does not apply when Garry breaks the law because breaking the law forces Garry into being evil.
+
+6. Restating the Conclusion:
+   - "If Garry is evil or breaks the law, then Garry is not both a criminal and breaking the law."
+   - From Premises 1, 2, and 3, if Garry breaks the law:
+     - He is a criminal.
+     - He is evil.
+
+   - Thus, Garry is both a criminal and breaking the law in this scenario, which contradicts the conclusion.
+
+Final Determination:
+The conclusion is False because the premises directly lead to the scenario where Garry can be both a criminal and breaking the law when he breaks the law. This contradicts the conclusion's condition.
+
+Answer: False.
+---
+Input:
+Premises:
+1.All eels are fish.
+2.No fish are plants.
+3.A thing is either a plant or animal.
+4.Nothing that breathes is paper.
+5.All animals breathe.
+6.If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal.
+
+Conclusion:
+Sea eel breathes or is a paper.
+Output:
+Let's analyze the premises and the conclusion step by step to determine if the conclusion logically follows.
+
+Premises:
+1. All eels are fish.
+   - Eels belong to the category of fish.
+
+2. No fish are plants.
+   - Fish and plants are mutually exclusive; a fish cannot be a plant.
+
+3. A thing is either a plant or an animal.
+   - Everything falls into one of these two categories: it is either a plant or an animal.
+
+4. Nothing that breathes is paper.
+   - If something breathes, it cannot be paper.
+
+5. All animals breathe.
+   - All animals have the property of breathing.
+
+6. If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal.
+   - This statement provides a condition: if a sea eel is either an eel or a plant, it must be an eel (from Premise 1) or an animal (from Premise 3).
+
+Conclusion:
+Sea eel breathes or is a paper.
+
+Step-by-Step Evaluation:
+
+1. From Premise 1 (All eels are fish), a sea eel is an eel, which means it is a fish.
+   Therefore, a sea eel is not a plant (Premise 2: no fish are plants).
+
+2. From Premise 3 (A thing is either a plant or an animal), since a sea eel is not a plant, it must be an animal.
+
+3. From Premise 5 (All animals breathe), if a sea eel is an animal, then it breathes.
+
+4. From Premise 4 (Nothing that breathes is paper), if a sea eel breathes, it cannot be paper.
+
+Conclusion Analysis:
+The conclusion states: "Sea eel breathes or is a paper."
+- From our logical deductions, a sea eel breathes (it is an animal and all animals breathe).
+- Since the first part of the conclusion ("Sea eel breathes") is true, the entire statement "Sea eel breathes or is a paper" is true based on the logical rule of disjunction (A or B is true if A is true).
+
+Final Answer:
+True
+---

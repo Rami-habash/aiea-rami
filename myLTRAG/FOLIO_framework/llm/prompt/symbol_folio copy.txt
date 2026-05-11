@@ -1,0 +1,103 @@
+Input:
+Premises:
+1.No criminal is kind.
+2.All person who breaks the law is a criminals.
+3.People are either kind or evil.
+4.If someone is evil, then they are ugly.
+5.If someone is evil, then they are cold-blood.
+6.If Garry is either evil and ugly or neither evil nor ugly, then Garry is not evil.
+
+Conclusion:
+If Garry is evil or breaks the law, then Garry is not both a criminal and breaking the law.
+Output:
+We can get these predicates:
+Criminal(x),Kind(x),BreakLaw(x),Evil(x),Ugly(x),ColdBlood(x)
+We can get these constants:
+garry
+Let's translate one by one.
+Premises:
+1.Text:No criminal is kind.
+Predicates:
+Kind(x),Criminal(x)
+Fol:∀x (Criminal(x) → ¬Kind(x))
+2.Text:All person who breaks the law is a criminals.
+Predicates:
+BreakLaw(x),Criminal(x)
+Fol:∀x (BreakLaw(x) → Criminal(x))
+3.Text:People are either kind or evil.
+Predicates:
+Kind(x),Evil(x)
+Fol:∀x (Kind(x) ⊕ Evil(x))
+4.Text:If someone is evil, then they are ugly.
+Predicates:
+Evil(x),Ugly(x)
+Fol:∀x (Evil(x) → Ugly(x))
+5.Text:If someone is evil, then they are cold-blood.
+Predicates:
+ColdBlood(x),Evil(x)
+Fol:∀x (Evil(x) → ColdBlood(x))
+6.Text:If Garry is either evil and ugly or neither evil nor ugly, then Garry is not evil.
+Predicates:
+Evil(x),Ugly(x)
+Constants:
+garry
+Fol:((Evil(garry) ∧ Ugly(garry)) ⊕ (¬Evil(garry) ∧ ¬Ugly(garry))) → ¬Evil(garry)
+Conclusion:
+Text:If Garry is evil or breaks the law, then Garry is not both a criminal and breaking the law.
+Predicates:
+BreakLaw(x),Evil(x),Criminal(x)
+Constants:
+garry
+Fol:(Evil(garry) ∨ BreakLaw(garry)) → ¬(Criminal(garry) ∧ BreakLaw(garry))
+---
+Premises:
+1.All eels are fish.
+2.No fish are plants.
+3.A thing is either a plant or animal.
+4.Nothing that breathes is paper.
+5.All animals breathe.
+6.If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal.
+
+Conclusion:
+Sea eel breathes or is a paper.
+Output:
+We can get these predicates:
+Eel(x),Fish(x),Plant(x),Animal(x),Breathe(x),Paper(x)
+We can get these constants:
+seaEel
+Let's translate one by one.
+Premises:
+1.Text:All eels are fish.
+Predicates:
+Fish(x),Eel(x)
+Fol:∀x  (Eel (x)→  Fish (x))
+2.Text:No fish are plants.
+Predicates:
+Fish(x),Plant(x)
+Fol:∀x  (Fish (x)→ ¬ Plant (x))
+3.Text:A thing is either a plant or animal.
+Predicates:
+Animal(x),Plant(x)
+Fol:∀x ( Plant (x) ∨  Animal (x))
+4.Text:Nothing that breathes is paper.
+Predicates:
+Paper(x),Breathe(x)
+Fol:∀x  (Breathe (x)→ ¬ Paper (x))
+5.Text:All animals breathe.
+Predicates:
+Animal(x),Breathe(x)
+Fol:∀x  (Animal (x)→  Breathe (x))
+6.Text:If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal.
+Predicates:
+Animal(x),Plant(x),Eel(x)
+Constants:
+seaEel
+Fol: Eel (seaEel) ⊕ Plant (seaEel) → Eel (seaEel) ∨ Animal (seaEel)
+Conclusion:
+Text:Sea eel breathes or is a paper.
+Predicates:
+Paper(x),Breathe(x)
+Constants:
+seaEel
+Fol:Breathe(seaEel) ∨ Paper(seaEel)
+---

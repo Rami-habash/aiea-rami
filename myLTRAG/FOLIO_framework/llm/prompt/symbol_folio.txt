@@ -1,0 +1,43 @@
+Input:
+Premises:
+1.No criminal is kind.
+2.All person who breaks the law is a criminals.
+3.People are either kind or evil.
+4.If someone is evil, then they are ugly.
+5.If someone is evil, then they are cold-blood.
+6.If Garry is either evil and ugly or neither evil nor ugly, then Garry is not evil.
+
+Conclusion:
+If Garry is evil or breaks the law, then Garry is not both a criminal and breaking the law.
+Output:
+Premises:
+∀x (Criminal(x) → ¬Kind(x))
+∀x (BreakLaw(x) → Criminal(x))
+∀x (Kind(x) ⊕ Evil(x))
+∀x (Evil(x) → Ugly(x))
+∀x (Evil(x) → ColdBlood(x))
+((Evil(garry) ∧ Ugly(garry)) ⊕ (¬Evil(garry) ∧ ¬Ugly(garry))) → ¬Evil(garry)
+Conclusion:
+(Evil(garry) ∨ BreakLaw(garry)) → ¬(Criminal(garry) ∧ BreakLaw(garry))
+---
+Premises:
+1.All eels are fish.
+2.No fish are plants.
+3.A thing is either a plant or animal.
+4.Nothing that breathes is paper.
+5.All animals breathe.
+6.If a sea eel is either an eel or a plant, then a sea eel is an eel or an animal.
+
+Conclusion:
+Sea eel breathes or is a paper.
+Output:
+Premises:
+∀x  (Eel (x)→  Fish (x))
+∀x  (Fish (x)→ ¬ Plant (x))
+∀x ( Plant (x) ∨  Animal (x))
+∀x  (Breathe (x)→ ¬ Paper (x))
+∀x  (Animal (x)→  Breathe (x))
+Eel (seaEel) ⊕ Plant (seaEel) → Eel (seaEel) ∨ Animal (seaEel)
+Conclusion:
+Breathe(seaEel) ∨ Paper(seaEel)
+---

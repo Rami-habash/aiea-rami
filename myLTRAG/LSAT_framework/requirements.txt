@@ -1,0 +1,7 @@
+nltk
+openai
+openpyxl
+pandas
+pyperclip
+z3
+z3_solver

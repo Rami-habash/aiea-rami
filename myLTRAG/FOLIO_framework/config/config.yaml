@@ -1,0 +1,86 @@
+task: "folio"
+agent:
+  extra:
+    type: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0.5
+  symbol:
+    type: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0.2
+    num: 3
+    kb_id: "67526ecd155ca7fd24bb5016"
+  cot:
+    type: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0.7
+    num: 0
+    kb_id: "67526ecd155ca7fd24bb5016"
+  standard:
+    type: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0.2
+    num: 0
+    kb_id: "67526ecd155ca7fd24bb5016"
+  errfix:
+    type: "openai"
+    model: "gpt-4o-mini"
+    temperature: 0.2
+    num: 3
+    kb_id: "674c6e59155ca7fd24ba52d4"
+
+model:
+  4omini:
+    type: "qdd"
+    model: "gpt-4o-mini-2024-07-18"
+  4t:
+    type: "qdd"
+    model: "gpt-4-turbo-2024-04-09"
+  4o11:
+    type: "onechat"
+    model: "gpt-4o-2024-11-20"
+  35:
+    type: "qdd"
+    model: "gpt-3.5-turbo-0125"
+  dp:
+    type: "deepseek"
+    model: "deepseek-chat"
+  Llama:
+    type: "sf"
+    model: "meta-llama/Llama-3.3-70B-Instruct"
+  gemma:
+    type: "sf"
+    model: "google/gemma-2-27b-it"
+  glm:
+    type: "sf"
+    model: "THUDM/glm-4-9b-chat"
+  dp25:
+    type: "sf"
+    model: "deepseek-ai/DeepSeek-V2.5"
+
+
+openai:
+  api_key: "OPENAI_API_KEY"
+  base_url: "https://api.openai.com/v1"
+
+sf:
+  api_key: "sk-xxxx"
+  base_url: "https://api.siliconflow.cn/v1"
+
+qdd:
+  api_key: "sk-xxx"
+  base_url: "https://35.aigcbest.top/v1"
+
+onechat:
+  api_key: "sk-xxxx"
+  base_url: "https://chatapi.onechats.top/v1"
+
+deepseek:
+  api_key: "sk-xxx"
+  base_url: "https://api.deepseek.com"
+
+
+
+fastgpt:
+  url: "https://"
+  key: "fastgpt-xxx"
