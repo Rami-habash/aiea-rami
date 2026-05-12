@@ -1,0 +1,73 @@
+On 4o-mini simple test
+FOLIO Framework:
+============================================================
+PIPELINE     ID     TRUTH      PRED       CORRECT
+============================================================
+COT          1      Unknown    Unknown    ✓
+COT          2      True       Unknown    ✗
+COT          3      Unknown    Unknown    ✓
+COT          4      Unknown    Unknown    ✓
+COT          5      True       True       ✓
+COT          6      Unknown    Unknown    ✓
+COT          7      Unknown    False      ✗
+COT          8      True       True       ✓
+COT          9      Unknown    Unknown    ✓
+COT          10     False      False      ✓
+STANDARD     1      Unknown    Unknown    ✓
+STANDARD     2      True       True       ✓
+STANDARD     3      Unknown    False      ✗
+STANDARD     4      Unknown    True       ✗
+STANDARD     5      True       True       ✓
+STANDARD     6      Unknown    False      ✗
+STANDARD     7      Unknown    False      ✗
+STANDARD     8      True       True       ✓
+STANDARD     9      Unknown    Unknown    ✓
+STANDARD     10     False      False      ✓
+LTRAG        1      Unknown    Unknown    ✓
+LTRAG        2      True       Error      ✗
+LTRAG        3      Unknown    Unknown    ✓
+LTRAG        4      Unknown    Unknown    ✓
+LTRAG        5      True       True       ✓
+LTRAG        6      Unknown    Unknown    ✓
+LTRAG        7      Unknown    Unknown    ✓
+LTRAG        8      True       True       ✓
+LTRAG        9      Unknown    Unknown    ✓
+LTRAG        10     False      False      ✓
+============================================================
+COT          8/10 (80.0%)
+STANDARD     6/10 (60.0%)
+LTRAG        9/10 (90.0%)
+============================================================
+
+LSAT Framework:
+==========================================================================
+PIPELINE   ID                               TRUTH    PRED     CORRECT
+==========================================================================
+  [COT]
+           ar_lsat_200006_1-G_1_2           B        None     ✗
+           ar_lsat_200006_1-G_1_4           C        C        ✓
+           ar_lsat_200006_1-G_1_1           E        B        ✗
+           ar_lsat_200006_1-G_1_5           A        D        ✗
+           ar_lsat_200006_1-G_1_6           C        D        ✗
+           ar_lsat_200006_1-G_1_3           D        B        ✗
+           ar_lsat_200006_1-G_2_8           E        B        ✗
+           ar_lsat_200006_1-G_2_10          D        C        ✗
+           ar_lsat_200006_1-G_2_9           A        C        ✗
+           ar_lsat_200006_1-G_2_7           E        C        ✗
+
+  [LTRAG]
+           ar_lsat_200006_1-G_1_6           C        E        ✗
+           ar_lsat_200006_1-G_2_7           E        E        ✓
+           ar_lsat_200006_1-G_2_8           E        E        ✓
+           ar_lsat_200006_1-G_1_2           B        E        ✗
+           ar_lsat_200006_1-G_2_10          D        X        ✗
+           ar_lsat_200006_1-G_1_1           E        X        ✗
+           ar_lsat_200006_1-G_1_4           C        X        ✗
+           ar_lsat_200006_1-G_1_5           A        X        ✗
+           ar_lsat_200006_1-G_2_9           A        X        ✗
+           ar_lsat_200006_1-G_1_3           D        X        ✗
+
+==========================================================================
+  COT        1/10  (10.0%)
+  LTRAG      2/10  (20.0%)
+==========================================================================
