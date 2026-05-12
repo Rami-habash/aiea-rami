@@ -6,10 +6,10 @@ os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 from llm.base import DATATYPE, MODEL
 
 # Config
-N_SAMPLES = 5
-NUM_PROCESSES = 4
-RAG_K = 3
-TEMP = 1
+N_SAMPLES = 10
+NUM_PROCESSES = 6
+RAG_K = 3 # for the fixer only. The actual is in config
+TEMP = 0.2
 
 RUN_COT = True
 RUN_LTRAG = True 
