@@ -25,6 +25,7 @@ class AgentBase:
         self.max_retry = 3
         self.json_msg = None
         self.prompt = None
+        self.last_usage = None  # populated after each chat() call; piggybacked onto sample JSONL
         # for normal conversation
         self.llm = OpenAI(
             api_key=config["agent"][model_type]["api_key"],
@@ -32,6 +33,7 @@ class AgentBase:
         )
         self.chat_model = config["agent"][model_type]["model"]
         self.temperature = config["agent"][model_type]["temperature"]
+        self.reasoning_effort = config["agent"][model_type].get("reasoning_effort") # initalizing reasoning
         # for JSON format conversation
         self.json_llm = OpenAI(
             api_key=config["agent"]["extra"]["api_key"],
@@ -51,14 +53,20 @@ class AgentBase:
         while cur < self.max_retry:
             try:
                 logging.debug(messages)
+                # only temp and max_tokens for inference
                 response = self.llm.chat.completions.create(
                     model=self.chat_model,
                     messages=messages,
-                    temperature=float(self.temperature),
-                    max_tokens=16384,
                     timeout=600,
+                    **({"reasoning_effort": self.reasoning_effort, "max_completion_tokens": 30000}
+                    if self.reasoning_effort
+                    else {"temperature": float(self.temperature), "max_tokens": 30000}),
                 )
+
                 logging.info(response)
+                u = response.usage
+                r = getattr(u.completion_tokens_details, "reasoning_tokens", 0) if u.completion_tokens_details else 0
+                self.last_usage = {"in": u.prompt_tokens, "out": u.completion_tokens, "reasoning": r}
                 response_text = self.get_content(response)
                 if not response_text:
                     return {}

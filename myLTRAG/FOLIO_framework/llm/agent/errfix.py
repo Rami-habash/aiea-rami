@@ -15,6 +15,7 @@ class errfix(AgentBase):
             self.num = agent_config.get("num",config["agent"][model_type]["num"])
             self.kb_id = agent_config.get("kb_id",config["agent"][model_type]["kb_id"])
             self.temperature = agent_config.get("temperature",config["agent"][model_type]["temperature"])
+        self.reasoning_effort = (agent_config or {}).get("reasoning_effort", self.reasoning_effort)
         # Grammar rules, may be used in subsequent tasks
         self.rule_msg = """The grammar of the first-order logic formular is defined as follows:
 1) logical conjunction of expr1 and expr2: expr1 ∧ expr2

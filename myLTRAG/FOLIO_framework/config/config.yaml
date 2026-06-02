@@ -2,30 +2,35 @@ task: "folio"
 agent:
   extra:
     type: "openai"
-    model: "gpt-4o-mini"
+    model: "gpt-5.4-mini"
     temperature: 0.5
+    reasoning_effort: null   # set to "minimal" | "low" | "medium" | "high" for reasoning models
   symbol:
     type: "openai"
-    model: "gpt-4o-mini"
+    model: "gpt-5.4-mini"
     temperature: 0.2
+    reasoning_effort: null
     num: 3
     kb_id: "67526ecd155ca7fd24bb5016"
   cot:
     type: "openai"
-    model: "gpt-4o-mini"
+    model: "gpt-5.4-mini"
     temperature: 0.7
+    reasoning_effort: null
     num: 0
     kb_id: "67526ecd155ca7fd24bb5016"
   standard:
     type: "openai"
-    model: "gpt-4o-mini"
+    model: "gpt-5.4-mini"
     temperature: 0.2
+    reasoning_effort: null
     num: 0
     kb_id: "67526ecd155ca7fd24bb5016"
   errfix:
     type: "openai"
-    model: "gpt-4o-mini"
+    model: "gpt-5.4-mini"
     temperature: 0.2
+    reasoning_effort: null
     num: 3
     kb_id: "674c6e59155ca7fd24ba52d4"
 

@@ -45,6 +45,7 @@ def process_line(line, agent_info):
     data['full_input_txt'] = symbol_ai.prompt
     data['premises-AI'] = premises_FOL
     data['conclusion-AI'] = conclusion_FOL
+    data['usage'] = symbol_ai.last_usage
     return json.dumps(data)
 
 def process_data_chunk(args):
@@ -62,7 +63,7 @@ def process_data_chunk(args):
 def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
     if agent_info is None:
         agent_info = config["agent"]["symbol"]
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_symbol.jsonl"
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     if os.path.exists(output_name):
         ctime = os.path.getctime(output_name)
         os.rename(
@@ -121,7 +122,7 @@ def merge_files(output_dir,agent_info):
     sorted_data = sorted(combined_data.values(), key=lambda x: x["id"])
     print(f"merged data: {len(sorted_data)} items")
     # write sorted data to final output file
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_symbol.jsonl"
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     with open(output_name, "w", encoding="utf-8") as outfile:
         for data in sorted_data:
             outfile.write(json.dumps(data) + "\n")
@@ -139,7 +140,7 @@ def run_rest(num_processes=4, agent_info=None):
     if agent_info is None:
         agent_info = config["agent"]["symbol"]
     merge_files(output_dir,agent_info)
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_symbol.jsonl"
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     if not os.path.exists(output_name):
         return run_parallel(0, False, num_processes, agent_info)
     processed_ids = set()
@@ -225,7 +226,7 @@ def main():
         for num in nums:
             agent_info['temperature'] = temp
             agent_info['num'] = num
-            output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_symbol.jsonl"
+            output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
 
             print(f"start testing: {agent_info['temperature']}_{agent_info['num']}")
             # test(agent_info)
@@ -238,7 +239,7 @@ def main():
 def fewshot():
     agent_info['temperature'] = 0.2
     agent_info['num'] = 0
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_symbol.jsonl"
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     run_rest(12, agent_info)
     print("ok")
 if __name__ == "__main__":

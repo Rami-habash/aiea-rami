@@ -17,6 +17,7 @@ class cot(AgentBase):
                 "kb_id", config["agent"][model_type]["kb_id"])
             self.temperature = agent_config.get(
                 "temperature", config["agent"][model_type]["temperature"])
+        self.reasoning_effort = (agent_config or {}).get("reasoning_effort", self.reasoning_effort)
         self.chat_msg = ""
         self.json_msg = ""
         if datatype == "folio":

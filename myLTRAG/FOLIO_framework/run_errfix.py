@@ -13,7 +13,7 @@ data_type = "test"
 # input is where sun_symbol errors out
 sym_info = config["agent"]["symbol"]
 sym_model_name = sym_info["model"].split("/")[-1] if "/" in sym_info["model"] else sym_info["model"]
-input_name = f"./data/{config['task']}/{sym_model_name}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_symbol.jsonl"
+input_name = f"./data/{config['task']}/{sym_model_name}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_{sym_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
 
 agent_info = config["agent"]["errfix"]
 
@@ -25,23 +25,25 @@ output_dir = f"./data/{config['task']}/{sym_model_name}"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-errfix_ai = errfix(config['task'])
-
 def process_line(line, agent_info):
+    errfix_ai = errfix(config['task'], agent_info)
     data = json.loads(line)
     print("Start execution:", data["id"], " time:", datetime.datetime.now())
     premises = data.get("premises", [])
     premises_FOL = data.get("premises-AI", [])
     if len(premises) != len(premises_FOL):
         return
-    premises_text = ""
     conclusion_text = data.get("conclusion", "")
     conclusion_FOL = data.get("conclusion-AI", "")
-    MAX_RETRY_TIME = 3
+    MAX_RETRY_TIME = 1
     retry_time = 0
     label = False
+    # accumulate usage across retries so the runner's token table reflects every attempt
+    acc_usage = {"in": 0, "cached": 0, "out": 0, "reasoning": 0}
     while retry_time < MAX_RETRY_TIME:
         retry_time += 1
+        # rebuild premises_text per attempt — otherwise retries duplicate every premise
+        premises_text = ""
         for i, premise in enumerate(premises):
             fol = premises_FOL[i] if i < len(premises_FOL) else ""
             premises_text += f"{i+1}.{premise} {fol}\n"
@@ -49,6 +51,9 @@ def process_line(line, agent_info):
         f, err = validate_formulas(formulas)
         prompt = f"Premises:\n{premises_text}\nConclusion:\n{conclusion_text}\n{conclusion_FOL}\nError:{err}"
         json_data, resp_txt = errfix_ai.chat(prompt)
+        u = errfix_ai.last_usage or {}
+        for k in acc_usage:
+            acc_usage[k] += u.get(k, 0)
         premises_FOL = json_data.get('premises', [])
         conclusion_FOL = json_data.get("conclusion", "")
         if isinstance(premises_FOL, str) or isinstance(conclusion_FOL, list):
@@ -66,6 +71,8 @@ def process_line(line, agent_info):
     data['full_input_txt'] = errfix_ai.prompt
     data['premises-AI'] = premises_FOL
     data['conclusion-AI'] = conclusion_FOL
+    data['usage'] = acc_usage
+    data['retries'] = retry_time
     return json.dumps(data)
 
 def process_data_chunk(args):
@@ -82,7 +89,10 @@ def process_data_chunk(args):
 def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
     if agent_info is None:
         agent_info = config["agent"]["errfix"]
-    output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}.jsonl"
+    # rebuilf from live config
+    sym = config["agent"]["symbol"]
+    input_name = f"./data/{config['task']}/{sym_model_name}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_symbol.jsonl"
+    output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}_{agent_info.get('reasoning_effort') or 'na'}.jsonl"
     if os.path.exists(output_name):
         ctime = os.path.getctime(output_name)
         os.rename(output_name, f"{output_dir}/res_{time.strftime('%Y-%m-%d-%H-%M-%S', time.localtime(ctime))}.jsonl")
@@ -93,9 +103,12 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
         if num_lines != 0:
             lines = lines[:num_lines]
         lines = [line for line in lines if json.loads(line)["label-AI"] == "Error"]
-    # if there are no parsing errors
+    # if there are no parsing errors, LTRAG output = symbol output verbatim
     if not lines:
         print("No symbol errors to fix.")
+        tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
+        full_output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
+        import shutil; shutil.copyfile(input_name, full_output_name)
         return
     temp_output_paths = [f"{output_dir}/part_{i}.jsonl" for i in range(num_processes)]
     for path in temp_output_paths:
@@ -110,6 +123,10 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
             with open(temp_path, "r", encoding="utf-8") as temp_file:
                 outfile.write(temp_file.read())
             os.remove(temp_path)
+    # merge: symbol rows + errfix overrides → full_errfix file (the actual LTRAG output)
+    tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
+    full_output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
+    merge_fix_file(input_name, output_name, full_output_name)
 
 def merge_files(output_dir, agent_info):
     files = os.listdir(output_dir)
@@ -125,7 +142,7 @@ def merge_files(output_dir, agent_info):
         print("no data to merge")
         return
     sorted_data = sorted(combined_data.values(), key=lambda x: x["id"])
-    output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}.jsonl"
+    output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}_{agent_info.get('reasoning_effort') or 'na'}.jsonl"
     with open(output_name, "w", encoding="utf-8") as outfile:
         for data in sorted_data:
             outfile.write(json.dumps(data) + "\n")
@@ -142,7 +159,7 @@ def sort_res(output_name):
 def run_rest(num_processes=4, agent_info=None):
     if agent_info is None:
         agent_info = config["agent"]["errfix"]
-    output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}.jsonl"
+    output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}_{agent_info.get('reasoning_effort') or 'na'}.jsonl"
     merge_files(output_dir, agent_info)
     processed_ids = set()
     tmp_res = []
@@ -225,10 +242,10 @@ def main():
         for num in nums:
             agent_info['temperature'] = temp
             agent_info['num'] = num
-            output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}.jsonl"
+            output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}_{agent_info.get('reasoning_effort') or 'na'}.jsonl"
             tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
 
-            full_output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_full_errfix_{tail_name}.jsonl"
+            full_output_name = f"{output_dir}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_{sym_info.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
 
             print(f"start testing: {agent_info['temperature']}_{agent_info['num']}")
             # test(agent_info)
