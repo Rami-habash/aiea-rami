@@ -2,18 +2,21 @@ import datetime
 import json
 import os
 import random
+import threading
 import time
-from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool as Pool
 from llm.agent.errfix import errfix
 from validator.fix_formula import validate_formulas
 from validator.inference import inference
 from config.Settings import config
 data_type = "test"
 
+MAX_RETRY = 3
+
 # input is where sun_symbol errors out
 sym_info = config["agent"]["symbol"]
 sym_model_name = sym_info["model"].split("/")[-1] if "/" in sym_info["model"] else sym_info["model"]
-input_name = f"./data/{config['task']}/{sym_model_name}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_{sym_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
+input_name = f"./data.nosync/{config['task']}/{sym_model_name}/{data_type}_{sym_info['temperature']}_{sym_info['num']}_{sym_info['kb_id']}_{sym_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
 
 agent_info = config["agent"]["errfix"]
 
@@ -21,7 +24,7 @@ model_name = agent_info["model"]
 if "/" in agent_info["model"]:
     model_name = agent_info["model"].split("/")[-1]
 
-output_dir = f"./data/{config['task']}/{sym_model_name}"
+output_dir = f"./data.nosync/{config['task']}/{sym_model_name}"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -30,12 +33,13 @@ def process_line(line, agent_info):
     data = json.loads(line)
     print("Start execution:", data["id"], " time:", datetime.datetime.now())
     premises = data.get("premises", [])
-    premises_FOL = data.get("premises-AI", [])
+    # update for handling mistranslation
+    premises_FOL = [p or "" for p in (data.get("premises-AI") or [])]
     if len(premises) != len(premises_FOL):
         return
     conclusion_text = data.get("conclusion", "")
-    conclusion_FOL = data.get("conclusion-AI", "")
-    MAX_RETRY_TIME = 1
+    conclusion_FOL = data.get("conclusion-AI") or ""
+    MAX_RETRY_TIME = MAX_RETRY
     retry_time = 0
     label = False
     # accumulate usage across retries so the runner's token table reflects every attempt
@@ -91,7 +95,7 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
         agent_info = config["agent"]["errfix"]
     # rebuilf from live config
     sym = config["agent"]["symbol"]
-    input_name = f"./data/{config['task']}/{sym_model_name}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_symbol.jsonl"
+    input_name = f"./data.nosync/{config['task']}/{sym_model_name}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_symbol.jsonl"
     output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_errfix_{agent_info['temperature']}_{agent_info['num']}_{agent_info.get('reasoning_effort') or 'na'}.jsonl"
     if os.path.exists(output_name):
         ctime = os.path.getctime(output_name)
@@ -105,7 +109,6 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
         lines = [line for line in lines if json.loads(line)["label-AI"] == "Error"]
     # if there are no parsing errors, LTRAG output = symbol output verbatim
     if not lines:
-        print("No symbol errors to fix.")
         tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
         full_output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
         import shutil; shutil.copyfile(input_name, full_output_name)
@@ -127,7 +130,7 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
     tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
     full_output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
     merge_fix_file(input_name, output_name, full_output_name)
-
+    
 def merge_files(output_dir, agent_info):
     files = os.listdir(output_dir)
     combined_data = {}

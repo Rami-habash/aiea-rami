@@ -58,9 +58,9 @@ class AgentBase:
                     model=self.chat_model,
                     messages=messages,
                     timeout=600,
-                    **({"reasoning_effort": self.reasoning_effort, "max_completion_tokens": 30000}
+                    **({"reasoning_effort": self.reasoning_effort}
                     if self.reasoning_effort
-                    else {"temperature": float(self.temperature), "max_tokens": 30000}),
+                    else {"temperature": float(self.temperature)}),
                 )
 
                 logging.info(response)
@@ -80,7 +80,16 @@ class AgentBase:
         if response_text:
             logging.info(response_text)
             if json_mode:
-                json_data = self.extract_json(response_text)
+                # update: bypass extractor if already formatted properly
+                # deployed in non-cot LTRAG
+                parsed = None
+                start, end = response_text.find("{"), response_text.rfind("}")
+                if start != -1 and end > start:
+                    try:
+                        parsed = json.loads(response_text[start:end + 1])
+                    except (json.JSONDecodeError, TypeError):
+                        parsed = None
+                json_data = parsed if isinstance(parsed, dict) else self.extract_json(response_text)
             else:
                 json_data = {}
             return json_data, response_text
@@ -103,6 +112,13 @@ class AgentBase:
                     messages=messages,
                     response_format={'type': 'json_object'}
                 )
+                # adding extractor call to LTRAG's costs
+                u = response.usage
+                r = getattr(u.completion_tokens_details, "reasoning_tokens", 0) if u.completion_tokens_details else 0
+                if isinstance(self.last_usage, dict):
+                    self.last_usage["in"] += u.prompt_tokens
+                    self.last_usage["out"] += u.completion_tokens
+                    self.last_usage["reasoning"] += r
                 msg = self.get_content(response)
                 if not msg:
                     return {}

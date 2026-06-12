@@ -1,6 +1,11 @@
 from z3 import *
 import re
+import threading
 from .translate import *
+
+# creating mutual exclusion for the threadpool on z3
+_z3_lock = threading.Lock()
+
 # set_param("sat.euf", True)
 # set_param("tactic.default_tactic", "sat")
 # set_param("solver.proof.log", "proof_log.smt2")
@@ -151,20 +156,25 @@ def log(msg):
 
 # wrapper function: accepts a complete example given in dictionary form, must at least contain "response" and "conclusion-AI"
 def inference(premises:list,conclusion:str):
-    predicates = {}
-    predicates_clear()
-    # replace original special symbols
-    conclusion = conclusion.replace('.', '').replace('\u2019', '')
-    for i in range(len(premises)):
-        premises[i] = premises[i].replace('.', '').replace('\u2019', '')
-        predicates = extract_predicates(premises[i])
-    # extract predicates, constants
-    predicates = extract_predicates(conclusion)
-    premises = translate_premises(premises)
-    conclusion = translate(conclusion.replace('.', ''))
-    print(premises)
-    print(conclusion)
-    return interface_from_z3str(premises,conclusion,predicates)
+    # guard for extraction returning empty or invalid fol 
+    if not conclusion or not premises or not all(isinstance(p, str) for p in premises):
+        return "Error", "empty or invalid FOL"
+    # mutex lock
+    with _z3_lock:
+        predicates = {}
+        predicates_clear()
+        # replace original special symbols
+        conclusion = conclusion.replace('.', '').replace('\u2019', '')
+        for i in range(len(premises)):
+            premises[i] = premises[i].replace('.', '').replace('\u2019', '')
+            predicates = extract_predicates(premises[i])
+        # extract predicates, constants
+        predicates = extract_predicates(conclusion)
+        premises = translate_premises(premises)
+        conclusion = translate(conclusion.replace('.', ''))
+        print(premises)
+        print(conclusion)
+        return interface_from_z3str(premises,conclusion,predicates)
 
 def interface_from_z3str(premises:list,conclusion:str,predicates:list):
     case1 = reason(premises, conclusion, predicates, premises, conclusion)

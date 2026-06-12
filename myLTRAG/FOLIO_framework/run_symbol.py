@@ -3,7 +3,7 @@ import json
 import os
 import random
 import time
-from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool as Pool 
 from llm.agent.symbol import symbol
 from validator.fix_formula import get_param_from_list
 from validator.inference import inference
@@ -16,8 +16,8 @@ if "/" in agent_info["model"]:
     model_name = agent_info["model"].split("/")[-1]
 
 data_type = "test"
-input_name = f"./data/{config['task']}/{data_type}.jsonl"
-output_dir = f"./data/{config['task']}/{model_name}"
+input_name = f"./data.nosync/{config['task']}/{data_type}.jsonl"
+output_dir = f"./data.nosync/{config['task']}/{model_name}"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -34,8 +34,9 @@ def process_line(line, agent_info):
     # call symbol ai
     symbol_ai = symbol(config['task'], agent_info)
     json_data, resp_txt = symbol_ai.chat(prompt)
-    premises_FOL = json_data.get('premises', "")
-    conclusion_FOL = json_data.get("conclusion", "")
+    # update for symbols that couldn't translate
+    premises_FOL = [p or "" for p in (json_data.get('premises') or [])]
+    conclusion_FOL = json_data.get("conclusion") or ""
     label, errmsg = inference(premises_FOL, conclusion_FOL)
     data["label-AI"] = label
     data["errmsg"] = errmsg

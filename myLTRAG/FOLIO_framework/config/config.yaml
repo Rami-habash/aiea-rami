@@ -4,7 +4,7 @@ agent:
     type: "openai"
     model: "gpt-5.4-mini"
     temperature: 0.5
-    reasoning_effort: null   # set to "minimal" | "low" | "medium" | "high" for reasoning models
+    reasoning_effort: null 
   symbol:
     type: "openai"
     model: "gpt-5.4-mini"
@@ -12,6 +12,7 @@ agent:
     reasoning_effort: null
     num: 3
     kb_id: "67526ecd155ca7fd24bb5016"
+    cot: true # original LTRAG comes like this
   cot:
     type: "openai"
     model: "gpt-5.4-mini"
@@ -33,7 +34,7 @@ agent:
     reasoning_effort: null
     num: 3
     kb_id: "674c6e59155ca7fd24ba52d4"
-
+    cot: true # original LTRAG comes like this
 model:
   4omini:
     type: "qdd"
