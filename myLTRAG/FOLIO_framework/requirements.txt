@@ -8,3 +8,4 @@ pandas
 pyperclip
 z3
 z3_solver
+matplotlib
