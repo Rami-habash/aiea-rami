@@ -112,7 +112,7 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
         tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
         full_output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
         import shutil; shutil.copyfile(input_name, full_output_name)
-        return
+        return {"predictions_file": full_output_name, "usage_files": []}
     temp_output_paths = [f"{output_dir}/part_{i}.jsonl" for i in range(num_processes)]
     for path in temp_output_paths:
         open(path, "w").close()
@@ -130,6 +130,9 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
     tail_name = f"{model_name}_{agent_info['temperature']}_{agent_info['num']}"
     full_output_name = f"{output_dir}/{data_type}_{sym['temperature']}_{sym['num']}_{sym['kb_id']}_{sym.get('reasoning_effort') or 'na'}_full_errfix_{tail_name}.jsonl"
     merge_fix_file(input_name, output_name, full_output_name)
+
+    # Repair usage is separate from the merged predictions, which include unchanged symbol rows.
+    return {"predictions_file": full_output_name, "usage_files": [output_name]}
     
 def merge_files(output_dir, agent_info):
     files = os.listdir(output_dir)

@@ -3,26 +3,25 @@ import json
 import os
 import random
 import time
-from multiprocessing import Pool
-from llm.agent.cot import cot
+from multiprocessing.pool import ThreadPool as Pool 
+from llm.agent.symbol import symbol
 from validator.fix_formula import get_param_from_list
 from validator.inference import inference
 from config.Settings import config
 
 # initialize configuration
-agent_info = config["agent"]["cot"]
+agent_info = config["agent"]["symbol"]
 model_name = agent_info["model"]
 if "/" in agent_info["model"]:
     model_name = agent_info["model"].split("/")[-1]
 
 data_type = "test"
-input_name = f"./data/{config['task']}/{data_type}.jsonl"
-output_dir = f"./data/{config['task']}/{model_name}"
+input_name = f"./data.nosync/{config['task']}/{data_type}.jsonl"
+output_dir = f"./data.nosync/{config['task']}/{model_name}"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
-
-def process_folio(line, agent_info):
+def process_line(line, agent_info):
     data = json.loads(line)
     print("Start execution:", data["id"], " time:", datetime.datetime.now())
     # prepare prompt
@@ -32,50 +31,23 @@ def process_folio(line, agent_info):
     for i, premise in enumerate(premises):
         premises_text += f"{i+1}.{premise}\n"
     prompt = f"Premises:\n{premises_text}\nConclusion:\n{conclusion_text}"
-    # call cot ai
-    cot_ai = cot(config['task'], agent_info)
-    json_data, resp_txt = cot_ai.chat(prompt)
-    label = json_data.get('answer', "")
+    # call symbol ai
+    symbol_ai = symbol(config['task'], agent_info)
+    json_data, resp_txt = symbol_ai.chat(prompt)
+    # update for symbols that couldn't translate
+    premises_FOL = [p or "" for p in (json_data.get('premises') or [])]
+    conclusion_FOL = json_data.get("conclusion") or ""
+    label, errmsg = inference(premises_FOL, conclusion_FOL)
     data["label-AI"] = label
+    data["errmsg"] = errmsg
     data["same"] = data["label-AI"] == data["label"]
     data['resp_txt'] = resp_txt
     data['input_txt'] = prompt
-    data['full_input_txt'] = cot_ai.prompt
-    data['usage'] = cot_ai.last_usage
-    print("execution completed ", data["id"], " time:", datetime.datetime.now())
+    data['full_input_txt'] = symbol_ai.prompt
+    data['premises-AI'] = premises_FOL
+    data['conclusion-AI'] = conclusion_FOL
+    data['usage'] = symbol_ai.last_usage
     return json.dumps(data)
-
-
-def process_AR_LSAT(line, agent_info):
-    data = json.loads(line)
-    print("Start execution:", data["id"], " time:", datetime.datetime.now())
-    # prepare prompt
-    context = data.get("context", "")
-    question = data.get("question", "")
-    options = data.get("options", [])
-    prompt = f"Context:{context}\nQuestion:{question}\nOptions:\n"
-    for option in options:
-        prompt = f"{prompt}{option}\n"
-    # call cot ai
-    cot_ai = cot(config['task'], agent_info)
-    json_data, resp_txt = cot_ai.chat(prompt)
-    label = json_data.get('answer', "")
-    data["answer-AI"] = label
-    data["same"] = data["answer-AI"] == data["answer"]
-    data['resp_txt'] = resp_txt
-    data['input_txt'] = prompt
-    data['full_input_txt'] = cot_ai.prompt
-    data['usage'] = cot_ai.last_usage
-    print("execution completed ", data["id"], " time:", datetime.datetime.now())
-    return json.dumps(data)
-
-
-def process_line(line, agent_info):
-    if config['task'] == "folio":
-        return process_folio(line, agent_info)
-    elif config['task'] == "AR-LSAT":
-        return process_AR_LSAT(line, agent_info)
-
 
 def process_data_chunk(args):
     chunk, temp_output_path, agent_info = args
@@ -89,11 +61,10 @@ def process_data_chunk(args):
             temp_file.flush()
             os.fsync(temp_file.fileno())
 
-
 def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
     if agent_info is None:
-        agent_info = config["agent"]["cot"]
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_cot.jsonl"
+        agent_info = config["agent"]["symbol"]
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     if os.path.exists(output_name):
         ctime = os.path.getctime(output_name)
         os.rename(
@@ -109,21 +80,18 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
             lines = lines[:num_lines]
 
     # create temporary output filename list
-    temp_output_paths = [
-        f"{output_dir}/part_{i}.jsonl" for i in range(num_processes)]
+    temp_output_paths = [f"{output_dir}/part_{i}.jsonl" for i in range(num_processes)]
     # clear or create temporary files
     for path in temp_output_paths:
         open(path, "w").close()
 
     # chunk data
     chunk_size = len(lines) // num_processes + (len(lines) % num_processes > 0)
-    data_chunks = [lines[i:i + chunk_size]
-                   for i in range(0, len(lines), chunk_size)]
+    data_chunks = [lines[i:i + chunk_size] for i in range(0, len(lines), chunk_size)]
 
     # create process pool
     with Pool(num_processes) as pool:
-        tasks = [(chunk, temp_output_paths[i], agent_info)
-                 for i, chunk in enumerate(data_chunks)]
+        tasks = [(chunk, temp_output_paths[i], agent_info) for i, chunk in enumerate(data_chunks)]
         pool.map(process_data_chunk, tasks)
 
     # merge temporary files
@@ -134,24 +102,16 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
             # delete temporary files
             os.remove(temp_path)
 
+    # Return exact paths so scoring never needs to guess which output belongs to this run.
+    return {"predictions_file": output_name, "usage_files": [output_name]}
 
-def merge_files(output_dir, agent_info):
+def merge_files(output_dir,agent_info):
     if agent_info is None:
-        agent_info = config["agent"]["cot"]
+        agent_info = config["agent"]["symbol"]
+    files = os.listdir(output_dir)
     combined_data = {}
 
-    # final output file name
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_cot.jsonl"
-
-    # if final output file already exists, first read existing data
-    if os.path.exists(output_name):
-        with open(output_name, "r", encoding="utf-8") as infile:
-            for line in infile:
-                data = json.loads(line)
-                combined_data[data["id"]] = data
-
-    # traverse temporary files, merge content into combined_data
-    files = os.listdir(output_dir)
+    # read each temporary file and store data in dictionary
     for file in files:
         if "part_" in file:
             with open(f"{output_dir}/{file}", "r", encoding="utf-8") as infile:
@@ -159,19 +119,17 @@ def merge_files(output_dir, agent_info):
                     data = json.loads(line)
                     combined_data[data["id"]] = data
             os.remove(f"{output_dir}/{file}")
-
     if not combined_data:
         print("no data")
         return
-
     # sort merged data by ID
     sorted_data = sorted(combined_data.values(), key=lambda x: x["id"])
-
-    # write to final output file, merged data will overwrite previous content
+    print(f"merged data: {len(sorted_data)} items")
+    # write sorted data to final output file
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     with open(output_name, "w", encoding="utf-8") as outfile:
         for data in sorted_data:
             outfile.write(json.dumps(data) + "\n")
-
 
 def sort_res(output_name):
     with open(output_name, "r", encoding="utf-8") as infile:
@@ -182,12 +140,11 @@ def sort_res(output_name):
         for d in data:
             outfile.write(json.dumps(d) + "\n")
 
-
 def run_rest(num_processes=4, agent_info=None):
     if agent_info is None:
-        agent_info = config["agent"]["cot"]
-    merge_files(output_dir, agent_info)
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_cot.jsonl"
+        agent_info = config["agent"]["symbol"]
+    merge_files(output_dir,agent_info)
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
     if not os.path.exists(output_name):
         return run_parallel(0, False, num_processes, agent_info)
     processed_ids = set()
@@ -197,11 +154,7 @@ def run_rest(num_processes=4, agent_info=None):
         for line in res_file:
             data = json.loads(line)
             # remove ones with no results
-            if not data.get("resp_txt"):
-                # if not data.get("label-AI"):
-                print(f"id:{data['id']} no results")
-                continue
-            if data_type == "AR-LSAT" and data.get("answer-AI") == "":
+            if not data.get("premises-AI") or not data.get("conclusion-AI") or not data.get("resp_txt"):
                 print(f"id:{data['id']} no results")
                 continue
             # temporary modification, run Error
@@ -228,22 +181,18 @@ def run_rest(num_processes=4, agent_info=None):
             return
         print(f"remaining data: {len(lines)} items")
         # create temporary output filename list
-        temp_output_paths = [
-            f"{output_dir}/part_{i}.jsonl" for i in range(num_processes)]
+        temp_output_paths = [f"{output_dir}/part_{i}.jsonl" for i in range(num_processes)]
         # clear or create temporary files
         for path in temp_output_paths:
             open(path, "w").close()
 
         # chunk data
-        chunk_size = len(lines) // num_processes + \
-            (len(lines) % num_processes > 0)
-        data_chunks = [lines[i:i + chunk_size]
-                       for i in range(0, len(lines), chunk_size)]
+        chunk_size = len(lines) // num_processes + (len(lines) % num_processes > 0)
+        data_chunks = [lines[i:i + chunk_size] for i in range(0, len(lines), chunk_size)]
 
         # create process pool
         with Pool(num_processes) as pool:
-            tasks = [(chunk, temp_output_paths[i], agent_info)
-                     for i, chunk in enumerate(data_chunks)]
+            tasks = [(chunk, temp_output_paths[i], agent_info) for i, chunk in enumerate(data_chunks)]
             pool.map(process_data_chunk, tasks)
 
         # merge temporary files to final output file
@@ -253,7 +202,6 @@ def run_rest(num_processes=4, agent_info=None):
                     outfile.write(temp_file.read())
                 # delete temporary files
                 os.remove(temp_path)
-
 
 def remove_duplicates(output_name):
     seen_ids = set()
@@ -269,40 +217,35 @@ def remove_duplicates(output_name):
             seen_ids.add(d["id"])
             outfile.write(json.dumps(d) + "\n")
 
-
 def test(agent_info):
     print(f"start testing: {agent_info['num']} {agent_info['temperature']}")
 
-
 def main():
-    temperatures = [0.1, 0.2, 0.3]
-    nums = [1, 2, 3]
-    # temperatures = [0.3]
-    # nums = [2,3]
+    temperatures = [0.1,0.2,0.3]
+    nums = [1,2,3]
+    # temperatures = [0.2]
+    # nums = [2]
 
     for temp in temperatures:
         for num in nums:
             agent_info['temperature'] = temp
             agent_info['num'] = num
-            output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_cot.jsonl"
+            output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
 
             print(f"start testing: {agent_info['temperature']}_{agent_info['num']}")
             # test(agent_info)
             # run_parallel(1, False, 1, agent_info)
             # run_parallel(0, False, 6, agent_info)
-            run_rest(5, agent_info)
+            run_rest(12, agent_info)
 
     print("all tests completed")
     print("ok")
-
-
 def fewshot():
-    agent_info['temperature'] = 0.1
+    agent_info['temperature'] = 0.2
     agent_info['num'] = 0
-    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_cot.jsonl"
-    run_rest(4, agent_info)
+    output_name = f"{output_dir}/{data_type}_{agent_info['temperature']}_{agent_info['num']}_{agent_info['kb_id']}_{agent_info.get('reasoning_effort') or 'na'}_symbol.jsonl"
+    run_rest(12, agent_info)
     print("ok")
-
-
 if __name__ == "__main__":
     fewshot()
+    main()

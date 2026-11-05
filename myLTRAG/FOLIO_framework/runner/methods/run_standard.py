@@ -3,7 +3,7 @@ import json
 import os
 import random
 import time
-from multiprocessing import Pool
+from multiprocessing.pool import ThreadPool as Pool  # threading better for I/O-bound API calls than processes
 from llm.agent.standard import standard
 from validator.fix_formula import get_param_from_list
 from validator.inference import inference
@@ -16,8 +16,8 @@ if "/" in agent_info["model"]:
     model_name = agent_info["model"].split("/")[-1]
 
 data_type = "test"
-input_name = f"./data/{config['task']}/{data_type}.jsonl"
-output_dir = f"./data/{config['task']}/{model_name}"
+input_name = f"./data.nosync/{config['task']}/{data_type}.jsonl"
+output_dir = f"./data.nosync/{config['task']}/{model_name}"
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
 
@@ -96,6 +96,9 @@ def run_parallel(num_lines=0, r=False, num_processes=8, agent_info=None):
                 outfile.write(temp_file.read())
             # delete temporary files
             os.remove(temp_path)
+
+    # Return exact paths so scoring never needs to guess which output belongs to this run.
+    return {"predictions_file": output_name, "usage_files": [output_name]}
 
 def merge_files(output_dir,agent_info):
     if agent_info is None:
